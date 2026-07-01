@@ -21,10 +21,10 @@
     const supabaseUrl = 'https://emwxfuklvggqctkseznia.supabase.co';
     const supabaseAnonKey = 'sb_publishable_j75j2rLJqCdBFceuzJWU9w_9Q1aTNJz';
 
-    const supabase = Supabase.createClient(supabaseUrl, supabaseAnonKey);
+    const mySupabaseClient = Supabase.createClient(supabaseUrl, supabaseAnonKey);
 
     document.getElementById('login').addEventListener('click', async () => {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { error } = await mySupabaseClient.auth.signInWithOAuth({
         provider: 'google',
         options: { redirectTo: window.location.href }
       });
@@ -32,10 +32,10 @@
     });
 
     document.getElementById('logout').addEventListener('click', async () => {
-      await supabase.auth.signOut();
+      await mySupabaseClient.auth.signOut();
     });
 
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    mySupabaseClient.auth.getUser().then(({ data: { user } }) => {
       document.getElementById('status').innerHTML = user 
         ? `Logged in as: ${user.email}` 
         : 'Status: Not logged in';
