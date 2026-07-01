@@ -11,20 +11,19 @@
 <body>
   <h1>Hello from Vercel + Supabase!</h1>
   <p>Your app is now connected.</p>
-  
   <button id="login">Sign in with Google</button>
   <button id="logout">Sign Out</button>
-  
   <div id="status">Status: Checking login...</div>
 
   <script>
-    const supabaseUrl = 'https://emwxfuklvggqctkseznia.supabase.co';
-    const supabaseAnonKey = 'sb_publishable_j75j2rLJqCdBFceuzJWU9w_9Q1aTNJz';
+    const supabaseUrl = 'https://emwxfuklvggqctkseznia.supabase.co'; 
+    const supabaseAnonKey = 'sb_publishable_j75j2rLJqCdBFceuzJWU9w_9Q1aTNJz'; 
 
-    const mySupabaseClient = Supabase.createClient(supabaseUrl, supabaseAnonKey);
+    // Using lowercase 'supabase' to pull the tool, and 'supabaseClient' to prevent collisions
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
     document.getElementById('login').addEventListener('click', async () => {
-      const { error } = await mySupabaseClient.auth.signInWithOAuth({
+      const { error } = await supabaseClient.auth.signInWithOAuth({
         provider: 'google',
         options: { redirectTo: window.location.href }
       });
@@ -32,13 +31,11 @@
     });
 
     document.getElementById('logout').addEventListener('click', async () => {
-      await mySupabaseClient.auth.signOut();
+      await supabaseClient.auth.signOut();
     });
 
-    mySupabaseClient.auth.getUser().then(({ data: { user } }) => {
-      document.getElementById('status').innerHTML = user 
-        ? `Logged in as: ${user.email}` 
-        : 'Status: Not logged in';
+    supabaseClient.auth.getUser().then(({ data: { user } }) => {
+      document.getElementById('status').innerHTML = user ? `Logged in as: ${user.email}` : 'Status: Not logged in';
     });
   </script>
 </body>
