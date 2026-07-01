@@ -4,8 +4,8 @@
   <title>My Startup MVP</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    body { font-family: system-ui; padding: 40px; }
-    button { padding: 12px 24px; font-size: 16px; margin: 10px; }
+    body { font-family: system-ui; padding: 40px; max-width: 600px; margin: 0 auto; }
+    button { padding: 12px 24px; font-size: 16px; margin: 10px; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -15,29 +15,28 @@
   <button id="login">Sign in with Google</button>
   <button id="logout">Sign Out</button>
   
-  <div id="status">Status: Not logged in</div>
+  <div id="status">Status: Checking login...</div>
 
   <script>
-    const supabase = Supabase.createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://YOUR-URL.supabase.co',
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'YOUR-ANON-KEY'
-    );
+    const supabaseUrl = 'https://YOUR-PROJECT.supabase.co';  // ← Replace
+    const supabaseAnonKey = 'YOUR-ANON-KEY-HERE';            // ← Replace
 
-    // Login
+    const supabase = Supabase.createClient(supabaseUrl, supabaseAnonKey);
+
     document.getElementById('login').addEventListener('click', async () => {
-      const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.href }
+      });
       if (error) document.getElementById('status').innerHTML = 'Error: ' + error.message;
     });
 
-    // Logout
     document.getElementById('logout').addEventListener('click', async () => {
       await supabase.auth.signOut();
-      document.getElementById('status').innerHTML = 'Signed out';
     });
 
     // Check current user
-    supabase.auth.getUser().then(({ data }) => {
-      const user = data.user;
+    supabase.auth.getUser().then(({ data: { user } }) => {
       document.getElementById('status').innerHTML = user 
         ? `Logged in as: ${user.email}` 
         : 'Status: Not logged in';
