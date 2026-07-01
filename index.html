@@ -4,7 +4,7 @@
   <title>My Startup MVP</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    body { font-family: system-ui; padding: 40px; max-width: 600px; margin: 0 auto; }
+    body { font-family: system-ui; padding: 40px; max-width: 600px; margin: 0 auto; text-align: center; }
     button { padding: 12px 24px; font-size: 16px; margin: 10px; cursor: pointer; }
   </style>
 </head>
@@ -18,8 +18,8 @@
   <div id="status">Status: Checking login...</div>
 
   <script>
-    const supabaseUrl = 'https://emwxfuklvggqctkseznia.supabase.co';  // ← Replace
-    const supabaseAnonKey = 'sb_publishable_j75j2rLJqCdBFceuzJWU9w_9Q1aTNJz';            // ← Replace
+    const supabaseUrl = 'https://emwxfuklvggqctkseznia.supabase.co'; 
+    const supabaseAnonKey = 'sb_publishable_j75j2rLJqCdBFceuzJWU9w_9Q1aTNJz'; 
 
     const supabase = Supabase.createClient(supabaseUrl, supabaseAnonKey);
 
@@ -35,7 +35,6 @@
       await supabase.auth.signOut();
     });
 
-    // Check current user
     supabase.auth.getUser().then(({ data: { user } }) => {
       document.getElementById('status').innerHTML = user 
         ? `Logged in as: ${user.email}` 
